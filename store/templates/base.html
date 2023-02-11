@@ -33,8 +33,8 @@
   <link rel="stylesheet" href="{% static 'app_store/css/fonts.css' %}">
   <link rel="stylesheet" href="{% static 'app_store/css/extra.css' %}">
 
-  <script src="{% static 'app_store/plg/CountDown/countdown.js'}"></script>
-  <script src="{% static 'http://html5shiv.googlecode.com/svn/trunk/html5.js'}"></script>
+  <script src="{% static 'app_store/plg/CountDown/countdown.js' %}"></script>
+  <script src="http://html5shiv.googlecode.com/svn/trunk/html5.js"></script>
 </head>
 <body class="Site">
   <!--if lt IE 8
@@ -221,51 +221,7 @@
       </div>
     </div>
   </header>
-
-    <div class="Middle Middle_top">
-      <div class="Middle-top">
-      <div class="wrap">
-        <div class="Middle-header">
-          <h1 class="Middle-title">Профиль
-          </h1>
-          <ul class="breadcrumbs Middle-breadcrumbs">
-            <li class="breadcrumbs-item"><a href="index.html">home</a>
-            </li>
-            <li class="breadcrumbs-item breadcrumbs-item_current"><span>Профиль</span>
-            </li>
-          </ul>
-        </div>
-      </div>
-    </div>
-        <div class="Section Section_column Section_columnLeft">
-        <div class="wrap">
-        <div class="Section-column">
-          <div class="Section-columnSection">
-            <header class="Section-header">
-              <strong class="Section-title">Навигация
-              </strong>
-            </header>
-            <div class="Section-columnContent">
-              <div class="NavigateProfile">
-                <ul class="menu menu_vt">
-                  <li class="menu-item"><a class="menu-link" href="account.html">Личный кабинет</a>
-                  </li>
-                  <li class="menu-item_ACTIVE menu-item"><a class="menu-link" href="profile.html">Профиль</a>
-                  </li>
-                  <li class="menu-item"><a class="menu-link" href="historyorder.html">История заказов</a>
-                  </li>
-
-                </ul>
-              </div>
-            </div>
-          </div>
-        </div>
-        {% block body %}
-
-        {% endblock %}
-        </div>
-      </div>
-    </div>
+  {% block body %}{% endblock %}
   <footer class="Footer">
     <div class="wrap">
       <div class="row Footer-main">
