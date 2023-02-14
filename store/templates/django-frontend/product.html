@@ -21,13 +21,13 @@
       <div class="wrap">
         <div class="Product">
           <div class="ProductCard">
-            {% if images %}
+            {% if object.image_set.all %}
             <div class="ProductCard-look">
               <div class="ProductCard-photo">
-                <img src="{{ images.first.image.url }}" alt="bigGoods.png"/>
+                <img src="{{ object.image_set.first.image.url }}" alt="bigGoods.png"/>
               </div>
               <div class="ProductCard-picts">
-               {% for img in images %}
+               {% for img in object.image_set.all %}
                 <a class="ProductCard-pict ProductCard-pict_ACTIVE" href="{{ img.image.url }}">
                 <img src="{{ img.image.url }}" alt="bigGoods.png"/></a>
                {% endfor %}
@@ -76,10 +76,9 @@
                 <div class="ProductCard-tags">
                   <strong class="ProductCard-tagsTitle">Tags:
                   </strong>
-                  <a href="#">Accesories</a>,
-                  <a href="#">Creative</a>,
-                  <a href="#">Design</a>,
-                  <a href="#">Gaming</a>
+                  {% for tag in object.tag.all %}
+                  <a href="{% url 'products' %}?tag={{ tag.slug }}">{{ tag.name }}</a>,
+                  {% endfor %}
                 </div>
               </div>
             </div>
@@ -91,7 +90,7 @@
               <a class="Tabs-link" href="#addit">
               <span>AdditionaL Info</span></a>
               <a class="Tabs-link" href="#reviews">
-                <span>Reviews ({{ comments.count }})</span></a>
+                <span>Reviews ({{ object.comment_set.count }})</span></a>
             </div>
             <div class="Tabs-wrap">
               <div class="Tabs-block" id="description">
@@ -101,8 +100,8 @@
                   <strong>adipiscing
                   </strong>&#32;elit doli. Aenean commodo ligula eget dolor. Aenean massa.&#32;<a href="#">Cumtipsu</a>&#32;sociis natoque penatibus et magnis dis parturient montesti, nascetur ridiculus mus. Donec quam felis, ultricies nec, pellentesque eutu, pretiumem.
                 </p>
-                {% if images %}
-                <img class="pict pict_right" src="{{ images.first.image.url }}" alt="bigGoods.png"/>
+                {% if object.image_set.first %}
+                <img class="pict pict_right" src="{{ object.image_set.first.image.url }}" alt="bigGoods.png"/>
                 {% endif %}
                 <ul>
                   <li>Lorem ipsum dolor sit amet, consectetuer
@@ -163,11 +162,11 @@
               </div>
               <div class="Tabs-block" id="reviews">
                 <header class="Section-header">
-                  <h3 class="Section-title">{{ comments.count }} Reviews
+                  <h3 class="Section-title">{{ object.comment_set.count }} Reviews
                   </h3>
                 </header>
                 <div class="Comments">
-                  {% for comment in comments %}
+                  {% for comment in object.comment_set.all %}
                     <div class="Comment">
                     <div class="Comment-column Comment-column_pict">
                       <div class="Comment-avatar">

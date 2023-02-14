@@ -5,6 +5,15 @@ from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 
 
+class Profile(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    telephone_number = models.IntegerField(null=True, blank=True)
+    image = models.ImageField(blank=True, null=True)
+
+    def get_success_url(self):
+        return reverse_lazy('user_detail', kwargs={'pk': self.pk})
+
+
 class Product(models.Model):
     DELIVERY = [
         ('f', 'free'),
@@ -18,7 +27,7 @@ class Product(models.Model):
     quantity = models.PositiveIntegerField()
     created = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
-    tag = models.ForeignKey('Tag', on_delete=models.CASCADE)
+    tag = models.ManyToManyField('Tag')
 
     def get_success_url(self):
         return reverse_lazy('product_detail', kwargs={'pk': self.pk})
@@ -67,35 +76,42 @@ class Order(models.Model):
     ]
     type_delivery = models.CharField(max_length=1, choices=TYPE_DELIVERY)
     type_payment = models.CharField(max_length=1, choices=TYPE_PAYMENT)
-    total_cost = models.PositiveIntegerField()
+    payment = models.ForeignKey('Payment', on_delete=models.CASCADE)
+    total_cost = models.PositiveIntegerField(blank=True, null=True)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES)
     city = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
-    created_at = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    products = models.ManyToManyField(Product)
+    created = models.DateTimeField(auto_now_add=True)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    products = models.ManyToManyField('OrderItem')
+    updated = models.DateField(auto_now=True)
 
     def get_success_url(self):
         return reverse_lazy('order_detail', kwargs={'pk': self.pk})
 
 
-class Profile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    telephone_number = models.ImageField(null=True, blank=True)
-    image = models.ImageField(blank=True, null=True)
-    order = models.ForeignKey(Order, on_delete=models.CASCADE, null=True, blank=True)
+class OrderItem(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(blank=True, null=True)
+    created = models.DateField(auto_now_add=True)
 
-    # def get_success_url(self):
-    #     return reverse_lazy('user_detail', kwargs={'pk': self.pk})
+
+class CartProduct(models.Model):
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(blank=True, null=True)
 
 
 class Cart(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    product = models.ManyToManyField(Product)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    product = models.ManyToManyField(CartProduct, blank=True)
+    total_cost = models.PositiveIntegerField(blank=True, null=True)
+    created = models.DateField(auto_now_add=True)
 
 
 class Payment(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     number_card = models.IntegerField(null=True, blank=True)
 
 

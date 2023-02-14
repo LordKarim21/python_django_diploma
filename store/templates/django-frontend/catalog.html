@@ -72,12 +72,9 @@
             </header>
             <div class="Section-columnContent">
               <div class="buttons">
-                <a class="btn btn_default btn_sm" href="#">Video</a>
-                <a class="btn btn_default btn_sm" href="#">Development</a>
-                <a class="btn btn_default btn_sm" href="#">Gaming</a>
-                <a class="btn btn_default btn_sm" href="#">Asus</a>
-                <a class="btn btn_default btn_sm" href="#">Development</a>
-                <a class="btn btn_default btn_sm" href="#">Video</a>
+                {% for tag in tags %}
+                  <a class="btn btn_default btn_sm" href="?tag={{tag.slug}}">{{tag.name}}</a>
+                {% endfor %}
               </div>
             </div>
           </div>
@@ -90,7 +87,7 @@
               <a class="Sort-sortBy Sort-sortBy_dec" href="#">Популярности</a>
               <a class="Sort-sortBy" href="?sort_price=-">Цене</a>
               <a class="Sort-sortBy" href="#">Отзывам</a>
-              <a class="Sort-sortBy Sort-sortBy_inc" href="#">Новизне</a>
+              <a class="Sort-sortBy Sort-sortBy_inc" href="?created=created">Новизне</a>
             </div>
           </div>
           <div class="Cards">

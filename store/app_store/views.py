@@ -6,50 +6,56 @@ from django.views.generic.edit import CreateView, FormMixin, FormView
 from django.views.generic import DetailView, ListView, UpdateView, View
 from django.contrib.auth.views import LogoutView, LoginView
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import CreateProfile
+from .forms import ProfileForm
 from django.core.paginator import Paginator
+from django.contrib.auth.mixins import UserPassesTestMixin
 
 
 class UserLoginView(LoginView):
     template_name = 'users/login.html'
     form_class = AuthenticationForm
-    success_url = reverse_lazy('main')
+
+    def get_success_url(self):
+        return reverse_lazy('account', kwargs={'pk': self.request.user.pk})
 
 
 class UserLogoutView(LogoutView):
-    next_page = reverse_lazy('main')
+    next_page = reverse_lazy('products')
 
 
-class UserRegisterView(CreateView):
-    form_class = CreateProfile
+class UserUpdateView(UpdateView):
+    model = Profile
+    form_class = ProfileForm
     template_name = 'django-frontend/profile.html'
-    success_url = reverse_lazy('main')
+
+    def get_success_url(self):
+        return reverse_lazy('account', kwargs={'pk': self.request.user.pk})
 
 
 class UserDetailView(DetailView):
     model = Profile
     template_name = 'django-frontend/account.html'
 
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['order'] = Order.objects.filter(pk=self.request.user.pk).first()
+        return context
 
-class MainView(View):
-    def get(self, request):
-        return render(request, 'users/main.html')
 
-
-class ProductDetailView(DetailView, FormMixin):
+class ProductDetailView(DetailView, FormMixin, UserPassesTestMixin):
     model = Product
     form_class = CommentForm
     template_name = 'django-frontend/product.html'
 
-    def get_success_url(self):
-        return reverse_lazy('product_detail', kwargs={'pk': self.get_object().id,})
+    def test_func(self):
+        user = self.request.user
+        return user.has_perm('polls.can_open') or user.has_perm('polls.can_edit')
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        product = context['product']
-        context['images'] = Image.objects.filter(product=product)
-        context['comments'] = Comment.objects.filter(product=product)
-        return context
+    def get_success_url(self):
+        if self.test_func:
+            return reverse_lazy('product_detail', kwargs={'pk': self.get_object().id})
+        else:
+            return reverse_lazy('login')
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
@@ -95,12 +101,25 @@ class ProductListView(ListView, FormMixin):
         if self.request.GET.get('price'):
             start, end = self.request.GET.get('price').split(';')
             queryset = queryset.filter(price__gte=start, price__lte=end)
+        if self.request.GET.get('tag'):
+            tag = self.request.GET.get('tag')
+            queryset = queryset.filter(tag__name=tag)
         return queryset
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['tags'] = Tag.objects.all()
+        return context
 
 
 class OrderDetailView(DetailView):
     model = Order
     template_name = 'django-frontend/oneorder.html'
+
+
+class OrderListView(ListView):
+    model = Order
+    template_name = 'django-frontend/historyorder.html'
 
 
 class OrderCreateView(CreateView):
@@ -115,7 +134,7 @@ class OrderCreateView(CreateView):
         return context
 
     def get_success_url(self):
-        return reverse_lazy('order_detail', kwargs={'pk': self.get_object().id,})
+        return reverse_lazy('order_detail', kwargs={'pk': self.get_object().id})
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
@@ -134,3 +153,8 @@ class OrderCreateView(CreateView):
             context.email = self.request.user.email
         context.save()
         return super().form_valid(context)
+
+
+class CartDetailView(DetailView):
+    model = Cart
+    template_name = "django-frontend/cart.html"

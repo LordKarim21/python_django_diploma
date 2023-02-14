@@ -1,0 +1,6 @@
+[
+  {"model": "app_story.category", "pk": 1, "fields": {"name": "Основной товар", "slug": "basic"}},
+  {"model": "app_story.category", "pk": 2, "fields": {"name": "Дополнительный товар", "slug": "additional"}},
+  {"model": "app_story.category", "pk": 3, "fields": {"name": "Товар-аксессуар", "slug": "accessory"}},
+  {"model": "app_story.category", "pk": 4, "fields": {"name": "Запчасти", "slug": "parts"}}
+]

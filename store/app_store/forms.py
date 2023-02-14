@@ -4,19 +4,10 @@ from django.contrib.auth.models import User
 from .models import Comment, Profile, Product, Comment, Order
 
 
-class CreateProfile(UserCreationForm):
-    full_name = forms.CharField(max_length=30, required=False)
-    telephone_number = forms.IntegerField(required=False)
-    image = forms.ImageField(required=False)
-
-    class Meta:
-        model = User
-        fields = ('password1', 'password2',)
-
-
-class UpdateProfileForm(forms.ModelForm):
+class ProfileForm(forms.ModelForm):
     full_name = forms.CharField(max_length=30, required=False)
     email = forms.EmailField(required=False)
+    image = forms.ImageField(required=False)
 
     class Meta:
         model = Profile
