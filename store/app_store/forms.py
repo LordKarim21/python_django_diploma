@@ -36,12 +36,10 @@ class ProductFilterForm(forms.Form):
 
 
 class OrderForm(forms.ModelForm):
-    # full_name = forms.CharField(required=False)
-    # telephone = forms.IntegerField(required=False)
-    # email = forms.CharField(required=False)
-    # password1 = forms.CharField(required=False)
-    # password2 = forms.CharField(required=False)
-
     class Meta:
         model = Order
         fields = ['type_delivery', 'type_payment', 'city', 'address']
+
+
+class AmountForm(forms.Form):
+    amount = forms.IntegerField(required=False)

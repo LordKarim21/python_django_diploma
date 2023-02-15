@@ -102,12 +102,26 @@ class CartProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(blank=True, null=True)
 
+    def add_quantity(self):
+        self.quantity += 1
+
+    def remove_quantity(self):
+        self.quantity -= 1
+
 
 class Cart(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     product = models.ManyToManyField(CartProduct, blank=True)
     total_cost = models.PositiveIntegerField(blank=True, null=True)
     created = models.DateField(auto_now_add=True)
+
+    def add_product(self, product: 'CartProduct'):
+        product = CartProduct.objects.get(id=product.id)
+        self.product.add(product)
+
+    def delete_product(self, product: 'CartProduct'):
+        product = CartProduct.objects.get(id=product.id)
+        self.products.remove(product)
 
 
 class Payment(models.Model):

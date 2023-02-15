@@ -3,7 +3,7 @@ from .models import *
 from .forms import *
 from django.urls import reverse_lazy
 from django.views.generic.edit import CreateView, FormMixin, FormView
-from django.views.generic import DetailView, ListView, UpdateView, View
+from django.views.generic import DetailView, ListView, UpdateView, View, DeleteView
 from django.contrib.auth.views import LogoutView, LoginView
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import ProfileForm
@@ -56,6 +56,28 @@ class ProductDetailView(DetailView, FormMixin, UserPassesTestMixin):
             return reverse_lazy('product_detail', kwargs={'pk': self.get_object().id})
         else:
             return reverse_lazy('login')
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.request.GET.get('amount'):
+            product = Product.objects.get(id=self.kwargs.get('pk'))
+            quantity = self.request.GET.get('amount')
+            profile = Profile.objects.get(user=self.request.user)
+            if not CartProduct.objects.filter(product=product):
+                cart_product = CartProduct.objects.create(profile=profile, quantity=quantity, product=product)
+
+            else:
+                cart_product = CartProduct.objects.get(product=product)
+                cart_product.quantity = quantity
+                cart_product.save()
+            total_cost = int(product.price) * int(quantity)
+            if not Cart.objects.filter(product=cart_product):
+                cart = Cart.objects.create(profile=profile, total_cost=float(total_cost))
+                cart.add_product(cart_product)
+            else:
+                cart = Cart.objects.get(product=cart_product)
+                cart.total_cost = total_cost
+        return queryset
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
@@ -155,6 +177,19 @@ class OrderCreateView(CreateView):
         return super().form_valid(context)
 
 
-class CartDetailView(DetailView):
+class CartListView(ListView):
     model = Cart
     template_name = "django-frontend/cart.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['total_cost'] = sum(int(item.total_cost) for item in self.object_list)
+        return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        if self.request.GET.get('product'):
+            cart_product_id = self.request.GET.get('product')
+            cart_product = queryset.filter(product__product__pk=cart_product_id).first()
+            cart_product.delete()
+        return queryset

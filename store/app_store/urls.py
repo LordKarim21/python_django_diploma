@@ -14,5 +14,5 @@ urlpatterns = [
     path('history', OrderListView.as_view(), name='history'),
     path('order/<int:pk>/', OrderDetailView.as_view(), name='order_detail'),
 
-    path('cart', CartDetailView.as_view(), name='cart_detail'),
+    path('cart_list', CartListView.as_view(), name='cart_list'),
 ]
