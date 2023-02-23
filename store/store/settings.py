@@ -55,7 +55,7 @@ ROOT_URLCONF = 'store.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'app_store', 'templates/')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -119,13 +119,13 @@ USE_TZ = True
 STATIC_URL = 'static/'
 
 STATICFILES_DIRS = [
-    BASE_DIR / "static",
+    BASE_DIR / "static/",
     '/var/www/static/',
 ]
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'templates/')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'app_store/templates')
 
-MEDIA_URL = '/media/'
+MEDIA_URL = 'templates/'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field

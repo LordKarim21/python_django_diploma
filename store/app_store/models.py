@@ -5,6 +5,18 @@ from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 
 
+class Post(models.Model):
+    title = models.CharField(max_length=255)
+    description = models.TextField()
+    image = models.ImageField(blank=True, null=True)
+    created = models.DateTimeField(auto_now_add=True)
+
+
+class ImagePost(models.Model):
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    image = models.ImageField(upload_to='post_image')
+
+
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     telephone_number = models.IntegerField(null=True, blank=True)
@@ -24,6 +36,7 @@ class Product(models.Model):
     price = models.DecimalField(default=0, max_digits=8, decimal_places=2)
     archived = models.BooleanField(default=False)
     delivery = models.CharField(max_length=1, choices=DELIVERY)
+    discount = models.IntegerField(default=0)
     quantity = models.PositiveIntegerField()
     created = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
@@ -49,16 +62,17 @@ class Tag(models.Model):
         return self.name
 
 
-class Image(models.Model):
+class ImageProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
     image = models.ImageField(null=True, blank=True, upload_to='product_image')
 
 
 class Comment(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, blank=True, null=True)
-    username = models.CharField(max_length=36, blank=True, null=True)
+    name = models.CharField(max_length=36, blank=True, null=True)
     created = models.DateTimeField(auto_now_add=True)
-    text = models.CharField(max_length=200)
+    rate = models.IntegerField(null=True, blank=True)
+    review = models.CharField(max_length=200)
 
 
 class Order(models.Model):
@@ -82,6 +96,8 @@ class Order(models.Model):
     city = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
     created = models.DateTimeField(auto_now_add=True)
+    description = models.CharField(max_length=50, null=False, blank=True)
+    full_name = models.CharField(max_length=255)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     products = models.ManyToManyField('OrderItem')
     updated = models.DateField(auto_now=True)
@@ -101,12 +117,6 @@ class CartProduct(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(blank=True, null=True)
-
-    def add_quantity(self):
-        self.quantity += 1
-
-    def remove_quantity(self):
-        self.quantity -= 1
 
 
 class Cart(models.Model):

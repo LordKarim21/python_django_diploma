@@ -1,6 +1,0 @@
-[
-  {"model": "app_story.tag", "pk": 1, "fields": {"name": "Gaming", "slug": "game"}},
-  {"model": "app_story.tag", "pk": 2, "fields": {"name": "Development", "slug": "development"}},
-  {"model": "app_story.tag", "pk": 3, "fields": {"name": "Video", "slug": "video"}},
-  {"model": "app_story.tag", "pk": 4, "fields": {"name": "Asus", "slug": "asus"}}
-]

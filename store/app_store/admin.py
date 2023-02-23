@@ -19,15 +19,15 @@ class OrderAdmin(admin.ModelAdmin):
 
 
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ['user', 'telephone_number', 'image']
+    list_display = ['id', 'user', 'telephone_number', 'image']
 
 
-class ImageAdmin(admin.ModelAdmin):
+class ImageProductAdmin(admin.ModelAdmin):
     list_display = ['image', 'product', ]
 
 
 class CommentAdmin(admin.ModelAdmin):
-    list_display = ['username', 'text']
+    list_display = ['name', 'review']
 
 
 class TagAdmin(admin.ModelAdmin):
@@ -46,6 +46,16 @@ class OrderItemAdmin(admin.ModelAdmin):
     list_display = ['profile']
 
 
+class PostAdmin(admin.ModelAdmin):
+    list_display = ['title', 'description']
+
+
+class ImagePostAdmin(admin.ModelAdmin):
+    list_display = ['post', 'image']
+
+
+admin.site.register(ImagePost, ImagePostAdmin)
+admin.site.register(Post, PostAdmin)
 admin.site.register(OrderItem, OrderItemAdmin)
 admin.site.register(Payment, PaymentAdmin)
 admin.site.register(CartProduct, CartProductAdmin)
@@ -53,7 +63,7 @@ admin.site.register(Cart, CartAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Tag, TagAdmin)
 admin.site.register(Comment, CommentAdmin)
-admin.site.register(Image, ImageAdmin)
+admin.site.register(ImageProduct, ImageProductAdmin)
 admin.site.register(Product, ProductAdmin)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Profile, ProfileAdmin)

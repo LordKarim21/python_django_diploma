@@ -6,20 +6,22 @@ from .models import Comment, Profile, Product, Comment, Order
 
 class ProfileForm(forms.ModelForm):
     full_name = forms.CharField(max_length=30, required=False)
-    email = forms.EmailField(required=False)
-    image = forms.ImageField(required=False)
+    mail = forms.EmailField(required=False)
 
     class Meta:
         model = Profile
-        fields = ['telephone_number', 'image']
+        fields = ['telephone_number']
 
-
-class ProductForm(forms.ModelForm):
-    file_field = forms.ImageField(widget=forms.ClearableFileInput(attrs={'multiple': True}), required=False)
-
-    class Meta:
-        model = Product
-        fields = ['title', 'description', 'price']
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.data.get('mail') or self.data.get('phone'):
+            self.instance.user.email = self.data.get('mail')
+            self.instance.telephone_number = self.data.get('phone')
+        elif self.data.get('password') and self.data.get('passwordReply'):
+            if self.data.get('password') == self.data.get('passwordReply') and \
+                    self.instance.user.password == self.data.get('passwordCurrent'):
+                self.instance.user.set_password(self.data.get('password'))
+        self.instance.save()
 
 
 class CommentForm(forms.ModelForm):
@@ -27,7 +29,7 @@ class CommentForm(forms.ModelForm):
 
     class Meta:
         model = Comment
-        fields = ['username', 'text']
+        fields = ['name', 'review', 'rate']
 
 
 class ProductFilterForm(forms.Form):

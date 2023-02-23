@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+  <div class="Middle Middle_top">
+    <div class="Middle-top">
+      <div class="wrap">
+        <div class="Middle-header">
+          <h1 class="Middle-title">Megano Sales
+          </h1>
+          <ul class="breadcrumbs Middle-breadcrumbs">
+            <li class="breadcrumbs-item"><a href="index.html">home</a>
+            </li>
+            <li class="breadcrumbs-item breadcrumbs-item_current"><span>Sales</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <div class="Section">
+      <div class="wrap">
+        <div class="Cards Cards_blog">
+          {% for product in object_list %}
+          {{product}}
+          <!-- Получаем товар по скидке -->
+          <div class="Card">
+            <a class="Card-picture" href="#">
+              <img src="{{ product.imageproduct_set.first.image.url }}"/>
+            </a>
+            <div class="Card-date">
+              <strong class="Card-date-number">{{product.created.day}}
+              </strong><span class="Card-date-month">{{product.created.month}}</span>
+            </div>
+            <div class="Card-date Card-date_to">
+              <strong class="Card-date-number">${ card.dateTo.day }$
+              </strong>
+              <span class="Card-date-month">${ card.dateTo.month }$</span>
+            </div>
+            <div class="Card-content">
+              <strong class="Card-title">
+                <a href="card.href">{{product.title}}</a>
+              </strong>
+              <div class="Card-description">{{product.description}}
+              </div>
+            </div>
+          </div>
+           <!-- Получаем товар по скидке -->
+          {% endfor %}
+          
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Доработать апгинацию!  -->
+  <div class="Pagination">
+    <div class="Pagination-ins">
+      {% if page_obj.has_previous %}
+      <a class="Pagination-element Pagination-element_prev" href="?page={{ page_obj.previous_page_number }}">
+        <img src="/static/frontend/assets/img/icons/prevPagination.svg" alt="prevPagination.svg"/>
+      </a>
+      {% endif %}
+      {% for page in page_obj.paginator.page_range %}
+      <a class="Pagination-element Pagination-element_current" href="?page={{ page }}">
+        <span class="Pagination-text">{{ page }}</span>
+      </a>
+      {% endfor %}
+      {% if page_obj.has_next %}
+      <a class="Pagination-element Pagination-element_prev" href="?page={{ page_obj.next_page_number }}">
+        <img src="/static/frontend/assets/img/icons/nextPagination.svg" alt="nextPagination.svg"/>
+      </a>
+      {% endif %}
+    </div>
+  </div>
+  <!-- Доработать апгинацию!  -->
+
+{% endblock %}
+
+{% block mixins %}
+<!--<script src="{% static 'frontend/assets/js/sales.js' %}"></script>-->
+{% endblock %}
