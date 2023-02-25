@@ -37,8 +37,6 @@
                            name="price"
                            type="text"
                            data-type="double"
-                           :data-min="filters.price.minValue"
-                           :data-max="filters.price.maxValue"
                            :data-from="filter.minPrice"
                            :data-to="filter.maxPrice"
                     />
@@ -97,9 +95,9 @@
               <div class="buttons">
 
                 {% for tag in tags %}
-                <button class="btn btn_default btn_sm" href="{{tag.slug}}">
+                <a class="btn btn_default btn_sm" href="{% url 'catalog' %}?tag={{tag.slug}}">
                   {{tag.name}}
-                </button>
+                </a>
                 {% endfor %}
 
               </div>

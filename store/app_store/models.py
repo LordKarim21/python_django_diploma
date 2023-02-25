@@ -3,6 +3,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.urls import reverse_lazy
 from django.contrib.auth.models import User
+from datetime import datetime
 
 
 class Profile(models.Model):
@@ -16,7 +17,8 @@ class Profile(models.Model):
 
 
 class SaleProduct(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    product = models.ForeignKey('Product', on_delete=models.CASCADE)
+    # sale_proc = models.IntegerField()
     started_sale = models.DateField()
     finished_sale = models.DateField()
 
@@ -116,7 +118,7 @@ class CartProduct(models.Model):
 
 class Cart(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    total_cost = models.DecimalField(blank=True, null=True)
+    total_cost = models.DecimalField(decimal_places=1, max_digits=100, blank=True, null=True)
     created = models.DateField(auto_now_add=True)
 
 

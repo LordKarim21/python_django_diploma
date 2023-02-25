@@ -115,22 +115,17 @@ class ProductListView(ListView, FormMixin):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        if self.request.GET.get('popularity'):
-            queryset = queryset.order_by('-comment')
+        print(self.request.GET)
         if self.request.GET.get('title'):
             title = self.request.GET.get('title')
             queryset = queryset.filter(title=title)
-        if self.request.GET.get('is_archived'):
+        if self.request.GET.get('available') == 'on':
             queryset = queryset.filter(archived=False)
-        if self.request.GET.get('is_free'):
+        if self.request.GET.get('freeDelivery') == 'on':
             queryset = queryset.filter(delivery='f')
-        if self.request.GET.get('created'):
-            queryset = queryset.order_by('-created')
-        if self.request.GET.get('sort_price'):
-            queryset = queryset.order_by('price')
         if self.request.GET.get('price'):
-            start, end = self.request.GET.get('price').split(';')
-            queryset = queryset.filter(price__gte=start, price__lte=end)
+            start, end = self.request.GET.get('maxPrice'), self.request.GET.get('minPrice')
+            queryset = queryset.filter(price__gte=end, price__lte=start)
         if self.request.GET.get('tag'):
             name = self.request.GET.get('tag')
             queryset = queryset.filter(tag__slug=name)
@@ -207,7 +202,8 @@ class CartListView(ListView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         cart = Cart.objects.get(profile=Profile.objects.get(user=self.request.user))
-        context['total_cost'] = cart.total_cost
+        if cart:
+            context['total_cost'] = cart.total_cost
         return context
 
     def get_queryset(self):

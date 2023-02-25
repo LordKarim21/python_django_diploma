@@ -42,7 +42,7 @@
             {% for product in products %}
             <div class="Card">
               <a class="Card-picture" href="{% url 'product_detail' pk=product.pk %}">
-                <img src="{{product.imageproduct_set.first.image}}" alt="{{product.title}}"/></a>
+                <img src="{{product.imageproduct_set.first.image.url}}" alt="{{product.title}}"/></a>
               <div class="Card-content">
                 <strong class="Card-title"><a href="{% url 'product_detail' pk=product.pk %}">{{ product.title }}</a>
                 </strong>
@@ -135,7 +135,7 @@
                 <div class="Slider-content">
                   <div class="Card">
                     <a class="Card-picture" href="{% url 'product_detail' pk=product.pk %}">
-                    <img src="{{product.imageproduct_set.first.image}}" alt="{{product.title}}"/></a>
+                    <img src="{{product.imageproduct_set.first.image.url}}" alt="{{product.title}}"/></a>
                     <div class="Card-content">
                       <strong class="Card-title"><a href="{% url 'product_detail' pk=product.pk %}">{{product.title}}</a>
                       </strong>

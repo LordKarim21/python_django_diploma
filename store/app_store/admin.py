@@ -46,6 +46,11 @@ class OrderItemAdmin(admin.ModelAdmin):
     list_display = ['profile']
 
 
+class SaleProductAdmin(admin.ModelAdmin):
+    list_display = ['product', 'started_sale', 'finished_sale']
+
+
+admin.site.register(SaleProduct, SaleProductAdmin)
 admin.site.register(OrderItem, OrderItemAdmin)
 admin.site.register(Payment, PaymentAdmin)
 admin.site.register(CartProduct, CartProductAdmin)
