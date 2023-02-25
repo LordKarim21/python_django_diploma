@@ -27,11 +27,11 @@
           <div class="Cart-product">
             <div class="Cart-block Cart-block_row">
               <div class="Cart-block Cart-block_pict">
-                <a class="Cart-pict" href="product.href">
+                <a class="Cart-pict" href="{% url 'product_detail' pk=item.product.pk %}">
                 <img class="Cart-img" src="{{ item.product.imageproduct_set.first.image }}" alt="product"/></a>
               </div>
               <div class="Cart-block Cart-block_info">
-                <a class="Cart-title" href="product.href">{{item.product.title}}</a>
+                <a class="Cart-title" href="{% url 'product_detail' pk=item.product.pk %}">{{item.product.title}}</a>
                 <div class="Cart-desc">{{item.product.description}}</div>
               </div>
               <div class="Cart-block Cart-block_price">

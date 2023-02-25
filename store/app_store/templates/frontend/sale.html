@@ -9,7 +9,7 @@
           <h1 class="Middle-title">Megano Sales
           </h1>
           <ul class="breadcrumbs Middle-breadcrumbs">
-            <li class="breadcrumbs-item"><a href="index.html">home</a>
+            <li class="breadcrumbs-item"><a href="{% url 'home' %}">home</a>
             </li>
             <li class="breadcrumbs-item breadcrumbs-item_current"><span>Sales</span>
             </li>
@@ -20,27 +20,26 @@
     <div class="Section">
       <div class="wrap">
         <div class="Cards Cards_blog">
-          {% for product in object_list %}
-          {{product}}
+          {% for product_sale in object_list %}
           <!-- Получаем товар по скидке -->
           <div class="Card">
             <a class="Card-picture" href="#">
-              <img src="{{ product.imageproduct_set.first.image.url }}"/>
+              <img src="{{ product_sale.product.imageproduct_set.first.image.url }}"/>
             </a>
             <div class="Card-date">
-              <strong class="Card-date-number">{{product.created.day}}
-              </strong><span class="Card-date-month">{{product.created.month}}</span>
+              <strong class="Card-date-number">{{product_sale.started_sale.day}}
+              </strong><span class="Card-date-month">{{ product_sale.started_sale.month}}</span>
             </div>
             <div class="Card-date Card-date_to">
-              <strong class="Card-date-number">${ card.dateTo.day }$
+              <strong class="Card-date-number">{{ product_sale.finished_sale.day }}
               </strong>
-              <span class="Card-date-month">${ card.dateTo.month }$</span>
+              <span class="Card-date-month">{{ product_sale.finished_sale.month }}</span>
             </div>
             <div class="Card-content">
               <strong class="Card-title">
-                <a href="card.href">{{product.title}}</a>
+                <a href="card.href">{{product_sale.product.title}}</a>
               </strong>
-              <div class="Card-description">{{product.description}}
+              <div class="Card-description">{{product_sale.product.description}}
               </div>
             </div>
           </div>

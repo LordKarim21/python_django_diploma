@@ -43,7 +43,8 @@
         </div>
         <div class="Section-content">
           {% if user.is_authenticated %}
-          <form class="form" action="#" method="post" @submit.prevent="confirmOrder">
+          <form class="form" method="post" @submit.prevent="confirmOrder">
+
             <div class="Order-block Order-block_OPEN" id="step1">
               <header class="Section-header Section-header_sm">
                 <h2 class="Section-title">Шаг 1. Параметры пользователя
@@ -57,11 +58,11 @@
                   </div>
                   <div class="form-group">
                     <label class="form-label" for="phone">Телефон</label>
-                    <input class="form-input" id="phone" name="phone" type="text" value="+70000000000"/>
+                    <input class="form-input" id="phone" name="phone" type="text" value="{{profile.telephone_number}}"/>
                   </div>
                   <div class="form-group">
                     <label class="form-label" for="mail">E-mail</label>
-                    <input class="form-input" id="mail" name="mail" type="text" value="" data-validate="require"/>
+                    <input class="form-input" id="mail" name="mail" type="text" value="{{ user.email }}" data-validate="require"/>
                   </div>
                 </div>
               </div>
@@ -132,7 +133,7 @@
                       <div class="Order-info">
                         <div class="Order-infoType">ФИО:
                         </div>
-                        <div class="Order-infoContent">{{ user.first_name }} {{ user.last_name }}
+                        <div class="Order-infoContent">{{profile.full_name}}
                         </div>
                       </div>
                       <div class="Order-info">
@@ -178,35 +179,38 @@
                 </div>
                 <div class="Cart Cart_order">
                   <!-- Товар на оплату -->
-                  <div v-for="product in order.products" class="Cart-product">
+
+                  {% for item in carts %}
+                  <div class="Cart-product">
                     <div class="Cart-block Cart-block_row">
                       <div class="Cart-block Cart-block_pict">
-                        <a class="Cart-pict" :href="product.href">
-                          <img class="Cart-img" :src="product.images.length ? product.images[0] : ''" alt="product.title"/>
+                        <a class="Cart-pict" href="{% url 'product_detail' pk=item.product.pk %}">
+                          <img class="Cart-img" src="{{item.product.imageproduct_set.first.image.url }}" alt="product"/>
                         </a>
                       </div>
                       <div class="Cart-block Cart-block_info">
-                        <a class="Cart-title" href="#">${ product.title }$</a>
-                        <div class="Cart-desc">${ product.shortDescription }$
+                        <a class="Cart-title" href="{% url 'product_detail' pk=item.product.pk %}">{{item.product.title}}</a>
+                        <div class="Cart-desc">{{item.product.description}}
                         </div>
                         </div>
                       </div>
                       <div class="Cart-block Cart-block_price">
-                        <div class="Cart-price">${ product.price }$$
+                        <div class="Cart-price">{{item.product.price }}$
                         </div>
                       </div>
                       <div class="Cart-block Cart-block_row">
-                        <div class="Cart-block Cart-block_amount">${ product.count }$ шт.
+                        <div class="Cart-block Cart-block_amount">{{item.quantity }} шт.
                         </div>
                       </div>
                     </div>
+                  {% endfor %}
                   </div>
                   <!-- Товар на оплату -->
 
                   <div class="Cart-total">
                     <div class="Cart-block Cart-block_total">
                       <strong class="Cart-title">Итого:</strong>
-                      <span class="Cart-price">${ order.products.reduce((acc, el) => {return acc += (el.price * el.count)}, 0) }$$</span>
+                      <span class="Cart-price">{{total_cost}}$</span>
                     </div>
                     <div class="Cart-block">
                       <button class="btn btn_primary btn_lg" type="submit">Оплатить
@@ -218,7 +222,7 @@
           </form>
          {% else %}
         <div class="row-block">
-          <form action="/auth/signin?next={{request.get_full_path}}" method="post">
+          <form action="{% url 'login' %}?next={{request.get_full_path}}" method="post">
             {% csrf_token %}
             <div class="form-group">
               <label class="form-label" for="login">Логин</label>
@@ -231,7 +235,7 @@
             <div class="form-group">
               <button class="btn btn_muted Order-btnReg" type="submit">Авторизация</button>
             </div>
-            <div class="form-group"><a class="btn btn_muted Order-btnReg" href="/auth/signup">Регистрация</a>
+            <div class="form-group"><a class="btn btn_muted Order-btnReg" href="{% url 'signup' %}">Регистрация</a>
           </div>
           </form>
         </div>

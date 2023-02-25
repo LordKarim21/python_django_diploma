@@ -26,7 +26,7 @@
               </strong>
             </header>
             <div class="Section-columnContent">
-              <form class="form" method="post" >
+              <form class="form" method="GET" >
                 {% csrf_token %}
                 <div class="form-group">
                   <div class="range Section-columnRange">
@@ -97,7 +97,7 @@
               <div class="buttons">
 
                 {% for tag in tags %}
-                <button class="btn btn_default btn_sm" href="?tag={{tag.slug}}">
+                <button class="btn btn_default btn_sm" href="{{tag.slug}}">
                   {{tag.name}}
                 </button>
                 {% endfor %}

@@ -5,25 +5,20 @@ from django.urls import reverse_lazy
 from django.contrib.auth.models import User
 
 
-class Post(models.Model):
-    title = models.CharField(max_length=255)
-    description = models.TextField()
-    image = models.ImageField(blank=True, null=True)
-    created = models.DateTimeField(auto_now_add=True)
-
-
-class ImagePost(models.Model):
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
-    image = models.ImageField(upload_to='post_image')
-
-
 class Profile(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
+    full_name = models.CharField(max_length=255, null=True, blank=True)
     telephone_number = models.IntegerField(null=True, blank=True)
     image = models.ImageField(blank=True, null=True)
 
     def get_success_url(self):
-        return reverse_lazy('user_detail', kwargs={'pk': self.pk})
+        return reverse_lazy('account', kwargs={'pk': self.pk})
+
+
+class SaleProduct(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    started_sale = models.DateField()
+    finished_sale = models.DateField()
 
 
 class Product(models.Model):
@@ -41,6 +36,9 @@ class Product(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
     tag = models.ManyToManyField('Tag')
+
+    def __str__(self):
+        return self.title
 
     def get_success_url(self):
         return reverse_lazy('product_detail', kwargs={'pk': self.pk})
@@ -77,12 +75,12 @@ class Comment(models.Model):
 
 class Order(models.Model):
     STATUS_CHOICES = [
-        ('p', 'Paid'),
-        ('n', 'Not paid')
+        ('p', 'paid'),
+        ('n', 'not paid')
     ]
     TYPE_DELIVERY = [
-        ('s', 'Standard'),
-        ('e', 'Express')
+        ('o', 'ordinary'),
+        ('e', 'express')
     ]
     TYPE_PAYMENT = [
         ('o', 'online'),
@@ -90,16 +88,12 @@ class Order(models.Model):
     ]
     type_delivery = models.CharField(max_length=1, choices=TYPE_DELIVERY)
     type_payment = models.CharField(max_length=1, choices=TYPE_PAYMENT)
-    payment = models.ForeignKey('Payment', on_delete=models.CASCADE)
     total_cost = models.PositiveIntegerField(blank=True, null=True)
     status = models.CharField(max_length=1, choices=STATUS_CHOICES)
     city = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
     created = models.DateTimeField(auto_now_add=True)
-    description = models.CharField(max_length=50, null=False, blank=True)
-    full_name = models.CharField(max_length=255)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    products = models.ManyToManyField('OrderItem')
     updated = models.DateField(auto_now=True)
 
     def get_success_url(self):
@@ -114,6 +108,7 @@ class OrderItem(models.Model):
 
 
 class CartProduct(models.Model):
+    cart = models.ForeignKey('Cart', on_delete=models.CASCADE)
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(blank=True, null=True)
@@ -121,21 +116,14 @@ class CartProduct(models.Model):
 
 class Cart(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    product = models.ManyToManyField(CartProduct, blank=True)
-    total_cost = models.PositiveIntegerField(blank=True, null=True)
+    total_cost = models.DecimalField(blank=True, null=True)
     created = models.DateField(auto_now_add=True)
-
-    def add_product(self, product: 'CartProduct'):
-        product = CartProduct.objects.get(id=product.id)
-        self.product.add(product)
-
-    def delete_product(self, product: 'CartProduct'):
-        product = CartProduct.objects.get(id=product.id)
-        self.products.remove(product)
 
 
 class Payment(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    month = models.IntegerField(max_length=2, default=datetime.now().month)
+    year = models.IntegerField(max_length=4, default=datetime.now().year)
     number_card = models.IntegerField(null=True, blank=True)
 
 

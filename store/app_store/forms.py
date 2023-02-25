@@ -5,17 +5,17 @@ from .models import Comment, Profile, Product, Comment, Order
 
 
 class ProfileForm(forms.ModelForm):
-    full_name = forms.CharField(max_length=30, required=False)
     mail = forms.EmailField(required=False)
 
     class Meta:
         model = Profile
-        fields = ['telephone_number']
+        fields = ['full_name', 'telephone_number']
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         if self.data.get('mail') or self.data.get('phone'):
             self.instance.user.email = self.data.get('mail')
+            # self.instance.full_name = self.data.get('phone')
             self.instance.telephone_number = self.data.get('phone')
         elif self.data.get('password') and self.data.get('passwordReply'):
             if self.data.get('password') == self.data.get('passwordReply') and \
@@ -35,13 +35,3 @@ class CommentForm(forms.ModelForm):
 class ProductFilterForm(forms.Form):
     is_archived = forms.BooleanField(required=False)
     is_free = forms.BooleanField(required=False)
-
-
-class OrderForm(forms.ModelForm):
-    class Meta:
-        model = Order
-        fields = ['type_delivery', 'type_payment', 'city', 'address']
-
-
-class AmountForm(forms.Form):
-    amount = forms.IntegerField(required=False)

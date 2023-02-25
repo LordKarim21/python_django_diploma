@@ -6,7 +6,6 @@ from django.views.generic.edit import CreateView, FormMixin, FormView
 from django.views.generic import DetailView, ListView, UpdateView, View, DeleteView, TemplateView
 from django.contrib.auth.views import LogoutView, LoginView
 from django.contrib.auth.forms import AuthenticationForm
-from .forms import ProfileForm
 from django.core.paginator import Paginator
 from django.contrib.auth.mixins import UserPassesTestMixin
 
@@ -20,7 +19,13 @@ class UserLoginView(LoginView):
 
 
 class UserLogoutView(LogoutView):
-    next_page = reverse_lazy('products')
+    next_page = reverse_lazy('home')
+
+
+class UserRegisterView(CreateView):
+    form_class = UserCreationForm
+    success_url = reverse_lazy("login")
+    template_name = "users/signup.html"
 
 
 class UserUpdateView(UpdateView, UserPassesTestMixin):
@@ -159,13 +164,11 @@ class OrderCreateView(CreateView, UserPassesTestMixin):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        if self.request.GET.get('product'):
-            products = self.request.GET.get('product').replace('[', '').replace(']', '').split(',')
-            cart_list = [Cart.objects.get(id=int(id)) for id in products]
-            context['carts'] = cart_list
-            context['total_cost'] = sum([item.total_cost for item in cart_list])
-        if self.request.user.is_authenticated:
-            context['profile'] = Profile.objects.get(id=self.request.user.pk)
+        profile = Profile.objects.get(user=self.request.user)
+        cart_product_list = CartProduct.objects.filter(profile=profile)
+        context['profile'] = profile
+        context['carts'] = cart_product_list
+        context['total_cost'] = Cart.objects.get(profile=profile).total_cost
         return context
 
     def test_func(self):
@@ -205,7 +208,6 @@ class CartListView(ListView):
         context = super().get_context_data(**kwargs)
         cart = Cart.objects.get(profile=Profile.objects.get(user=self.request.user))
         context['total_cost'] = cart.total_cost
-        context['product_list'] = [item.pk for item in self.object_list]
         return context
 
     def get_queryset(self):
@@ -229,24 +231,24 @@ class IndexView(TemplateView):
 
 
 class SaleView(ListView):
-    model = Product
+    model = SaleProduct
     template_name = 'frontend/sale.html'
     paginate_by = 20
 
 
 class PaymentCreateView(CreateView):
     model = Payment
-    fields = ['number_card']
+    fields = ['number_card', 'month', 'year']
     template_name = 'frontend/payment.html'
 
     def get_success_url(self):
-        return reverse_lazy('loading', kwargs={'payment': self.request.POST.get('number_card')})
+        return reverse_lazy('progressPayment', kwargs={'progressPayment': self.request.POST.get('number_card')})
 
 
-class PaymentSomeoneView(CreateView):
+class PaymentSomeoneCreateView(CreateView):
     model = Payment
     fields = ['number_card']
     template_name = 'frontend/paymentsomeone.html'
 
     def get_success_url(self):
-        return reverse_lazy('loading', kwargs={'payment': self.request.POST.get('number_card')})
+        return reverse_lazy('progressPayment', kwargs={'progressPayment': self.request.POST.get('number_card')})

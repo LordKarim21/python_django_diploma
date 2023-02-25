@@ -44,11 +44,11 @@
             <div class="Account-group">
               <div class="Account-column">
                 <div class="Account-avatar">
-                  <img src="{{object.image}}" alt="avatar"/>
+                  <img src="{{object.image.url}}" alt="avatar"/>
                 </div>
               </div>
               <div class="Account-column">
-                <div class="Account-name">{{object.user.first_name}} {{object.user.last_name}}</div>
+                <div class="Account-name">{{object.full_name}}</div>
                 <a class="Account-editLink" href="{% url 'account_update' %}">Редактировать профиль</a>
               </div>
             </div>

@@ -34,7 +34,7 @@
                     </div>
                     <div class="Order-info">
                       <div class="Order-infoType">ФИО:</div>
-                      <div class="Order-infoContent">{{order.full_name}}</div>
+                      <div class="Order-infoContent">{{order.profile.full_name}}</div>
                     </div>
                     <div class="Order-info">
                       <div class="Order-infoType">Телефон:</div>
@@ -73,17 +73,17 @@
                   </div>
                 </div>
               </div>
-              {% for product in order.products.all %}
+              {% for product in order.orderitem_set.all %}
               <div class="Cart Cart_order">
                 <div class="Cart-product">
                   <div class="Cart-block Cart-block_row">
                     <div class="Cart-block Cart-block_pict">
-                      <a class="Cart-pict" href="#">
+                      <a class="Cart-pict" href="{% url 'product_detail' pk=product.product.pk %}">
                         <img class="Cart-img" src="{{ product.product.imageproduct_set.first.image.url }}" alt="product.image.alt"/>
                       </a>
                     </div>
                     <div class="Cart-block Cart-block_info">
-                      <a class="Cart-title" href="#">{{product.product.title}}</a>
+                      <a class="Cart-title" href="{% url 'product_detail' pk=product.product.pk %}">{{product.product.title}}</a>
                       <div class="Cart-desc">{{product.product.description}}</div>
                     </div>
                     <div class="Cart-block Cart-block_price">
@@ -99,7 +99,7 @@
                     <strong class="Cart-title">Итого:<span class="Cart-price">{{order.total_cost}}$</span>
                     </strong>
                   </div>
-                  <div class="Cart-block"><a class="btn btn_primary btn_lg" href="#">Оплатить</a>
+                  <div class="Cart-block"><a class="btn btn_primary btn_lg" href="{% url 'payment' %}">Оплатить</a>
                   </div>
                 </div>
               </div>

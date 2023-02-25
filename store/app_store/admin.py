@@ -46,16 +46,6 @@ class OrderItemAdmin(admin.ModelAdmin):
     list_display = ['profile']
 
 
-class PostAdmin(admin.ModelAdmin):
-    list_display = ['title', 'description']
-
-
-class ImagePostAdmin(admin.ModelAdmin):
-    list_display = ['post', 'image']
-
-
-admin.site.register(ImagePost, ImagePostAdmin)
-admin.site.register(Post, PostAdmin)
 admin.site.register(OrderItem, OrderItemAdmin)
 admin.site.register(Payment, PaymentAdmin)
 admin.site.register(CartProduct, CartProductAdmin)
