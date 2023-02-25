@@ -43,7 +43,7 @@ class PaymentAdmin(admin.ModelAdmin):
 
 
 class OrderItemAdmin(admin.ModelAdmin):
-    list_display = ['profile']
+    list_display = ['product']
 
 
 class SaleProductAdmin(admin.ModelAdmin):

@@ -148,7 +148,7 @@ class OrderListView(ListView):
 
     def get_queryset(self):
         queryset = super().get_queryset()
-        queryset = queryset.filter(profile=Profile.objects.get(user=self.request.user))
+        queryset = queryset.get(profile=Profile.objects.get(user=self.request.user))
         return queryset
 
 

@@ -13,7 +13,6 @@ urlpatterns = [
 
     path('cart/', CartListView.as_view(), name='cart'),
     path('catalog/', ProductListView.as_view(), name='catalog'),
-    path('catalog/<slug:tag>', ProductListView.as_view(), name='catalog'),
 
     path('history-order/', OrderListView.as_view(), name="order_list"),  # TODO получать данные в шаблон
     path('order-detail/<int:pk>', OrderDetailView.as_view(), name="order_detail"),  # TODO получать данные в шаблон

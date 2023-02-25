@@ -84,7 +84,7 @@
                     </div>
                     <div class="Cart-block Cart-block_info">
                       <a class="Cart-title" href="{% url 'product_detail' pk=product.product.pk %}">{{product.product.title}}</a>
-                      <div class="Cart-desc">{{product.product.description}}</div>
+                      <div class="Cart-desc">{{product.product.description|truncatechars:50}}</div>
                     </div>
                     <div class="Cart-block Cart-block_price">
                       <div class="Cart-price">{{product.product.price}}$</div>

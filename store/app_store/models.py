@@ -34,7 +34,7 @@ class Product(models.Model):
     archived = models.BooleanField(default=False)
     delivery = models.CharField(max_length=1, choices=DELIVERY)
     discount = models.IntegerField(default=0)
-    quantity = models.PositiveIntegerField()
+    quantity = models.PositiveIntegerField(default=0)
     created = models.DateTimeField(auto_now_add=True)
     category = models.ForeignKey('Category', on_delete=models.CASCADE)
     tag = models.ManyToManyField('Tag')
@@ -103,7 +103,7 @@ class Order(models.Model):
 
 
 class OrderItem(models.Model):
-    profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    order = models.ForeignKey(Order, on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(blank=True, null=True)
     created = models.DateField(auto_now_add=True)
