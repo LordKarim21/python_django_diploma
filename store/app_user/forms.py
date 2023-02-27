@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User
-from .models import Comment, Profile, Product, Comment, Order
+from .models import Profile
 
 
 class ProfileForm(forms.ModelForm):
@@ -22,16 +22,3 @@ class ProfileForm(forms.ModelForm):
                     self.instance.user.password == self.data.get('passwordCurrent'):
                 self.instance.user.set_password(self.data.get('password'))
         self.instance.save()
-
-
-class CommentForm(forms.ModelForm):
-    email = forms.EmailField(required=False)
-
-    class Meta:
-        model = Comment
-        fields = ['name', 'review', 'rate']
-
-
-class ProductFilterForm(forms.Form):
-    is_archived = forms.BooleanField(required=False)
-    is_free = forms.BooleanField(required=False)

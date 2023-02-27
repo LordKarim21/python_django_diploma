@@ -29,7 +29,7 @@
         <div class="row ControlPanel-row">
           <div class="row-block">
             <div class="row ControlPanel-rowSplit">
-              <div class="row-block"><a class="ControlPanel-title" href="#">Free delivery</a>
+              <div class="row-block"><a class="ControlPanel-title" href="{% url 'catalog' %}?freeDelivery=on">Free delivery</a>
               </div>
               <div class="row-block hide_700"><span class="ControlPanel-title">Follow Us</span>
                 <ul class="menu menu_img menu_smallImg ControlPanel-menu">
@@ -45,9 +45,9 @@
           <nav class="row-block">
             <div class="row ControlPanel-rowSplit">
                 {% if user.is_authenticated %}
-                  <div class="row-block"><a class="ControlPanel-title" href="/profile">{{ user.username }}</a>
+                  <div class="row-block"><a class="ControlPanel-title" href="{% url 'account' pk=user.id %}">{{ user.username }}</a>
                 {% else %}
-                  <div class="row-block"><a class="ControlPanel-title" href="/admin/login/">Login / Register</a>
+                  <div class="row-block"><a class="ControlPanel-title" href="{% url 'login' %}">Login / Register</a>
                 {% endif %}
               </div>
             </div>
@@ -63,15 +63,15 @@
         <nav class="row-block row-block_right Header-menu">
           <div class="menuModal" id="navigate">
             <ul class="menu menu_main">
-              <li class="menu-item"><a class="menu-link" href="/store/static">Home</a>
+              <li class="menu-item"><a class="menu-link" href="#">Home</a>
               </li>
 
-              <li class="menu-item"><a class="menu-link" href="frontend/sale.html">Blog</a>
+              <li class="menu-item"><a class="menu-link" href="{% url 'sale' %}">Blog</a>
               </li>
               <li class="menu-item"><span class="menu-label menu-label_success">Hot</span><a class="menu-link" href="frontend/product.html">Gallery</a>
               </li>
 
-              <li class="menu-item"><a class="menu-link" href="frontend/catalog.html">Purchase</a>
+              <li class="menu-item"><a class="menu-link" href="{% url 'catalog' %}">Purchase</a>
               </li>
             </ul>
           </div>

@@ -38,6 +38,10 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'app_store',
+    'app_user',
+    'app_product',
+    'app_cart',
+    'app_order',
 ]
 
 MIDDLEWARE = [
@@ -55,7 +59,7 @@ ROOT_URLCONF = 'store.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'app_store', 'templates/')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates/')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -78,6 +82,11 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        # 'NAME': 'store',
+        # 'USER': 'store',
+        # 'PASSWORD': 'store',
+        # 'HOST': 'localhost',
+        # 'PORT': '8000',
     }
 }
 
@@ -123,7 +132,7 @@ STATICFILES_DIRS = [
     '/var/www/static/',
 ]
 
-MEDIA_ROOT = os.path.join(BASE_DIR, 'app_store/templates')
+MEDIA_ROOT = os.path.join(BASE_DIR, 'templates')
 
 MEDIA_URL = 'templates/'
 
