@@ -20,6 +20,7 @@ class CartProduct(models.Model):
     def update_quantity(self, quantity: int, product: Product):
         cart_item = CartProduct.objects.get(product=product)
         cart_item.quantity = quantity
+        cart_item.save()
 
     def get_cart_items(self, profile: Profile):
         return CartProduct.objects.filter(profile=profile)
