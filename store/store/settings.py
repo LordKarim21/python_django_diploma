@@ -81,7 +81,7 @@ WSGI_APPLICATION = 'store.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
         # 'NAME': 'store',
         # 'USER': 'store',
         # 'PASSWORD': 'store',
@@ -140,3 +140,21 @@ MEDIA_URL = 'templates/'
 # https://docs.djangoproject.com/en/4.1/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST_USER = 'username@gmail.com'
+EMAIL_HOST_PASSWORD = 'password'
+EMAIL_PORT = 587
+
+
+# CELERY
+host = '0.0.0.0'
+port = '6379'
+CELERY_BROKER_URL = 'redis://' + host + ':' + port + '/0'
+CELERY_RESULT_TRANSPORT_OPTIONS = {'visibility_timeout': 3600}
+CELERY_RESULT_BACKEND = 'redis://' + host + ':' + port + '/0'
+CELERY_ACCEPT_CONTENT = ['application/json']
+CELERY_TASK_SERIALIZER = 'json'
+CELERY_RESULT_SERIALIZER = 'json'
