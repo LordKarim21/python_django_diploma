@@ -1,0 +1,10 @@
+[
+  {
+    "model": "app_product.category",
+    "pk": 1,
+    "fields": {
+      "name": "Apple",
+      "slug": "apple"
+    }
+  }
+]

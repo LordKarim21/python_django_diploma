@@ -5,6 +5,6 @@ from app_user.models import Profile
 
 class Payment(models.Model):
     profile = models.ForeignKey(Profile, on_delete=models.CASCADE)
-    month = models.IntegerField(max_length=2, default=datetime.now().month)
-    year = models.IntegerField(max_length=4, default=datetime.now().year)
+    month = models.IntegerField(default=datetime.now().month)
+    year = models.IntegerField(default=datetime.now().year)
     number_card = models.IntegerField(null=True, blank=True)

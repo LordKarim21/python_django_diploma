@@ -1,0 +1,92 @@
+[
+  {
+    "model": "app_product.product",
+    "pk": 1,
+    "fields": {
+      "title": "Iphone",
+      "description": "IphoneIphoneIphoneIphoneIphoneIphoneIphoneIphoneIphoneIphoneIphone",
+      "price": "100.00",
+      "archived": false,
+      "delivery": "f",
+      "discount": 0,
+      "quantity": 10,
+      "created": "2023-03-07T05:11:43.975Z",
+      "category": 1,
+      "tag": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "app_product.product",
+    "pk": 2,
+    "fields": {
+      "title": "sumsung",
+      "description": "sumsungsumsungsumsungsumsung",
+      "price": "100.00",
+      "archived": true,
+      "delivery": "f",
+      "discount": 0,
+      "quantity": 0,
+      "created": "2023-03-07T05:11:43.975Z",
+      "category": 1,
+      "tag": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "app_product.product",
+    "pk": 3,
+    "fields": {
+      "title": "product",
+      "description": "productproductproductproductproduct",
+      "price": "100.00",
+      "archived": false,
+      "delivery": "t",
+      "discount": 0,
+      "quantity": 10,
+      "created": "2023-03-07T05:11:43.975Z",
+      "category": 1,
+      "tag": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "app_product.product",
+    "pk": 4,
+    "fields": {
+      "title": "Iphone",
+      "description": "IphoneIphoneIphoneIphoneIphoneIphoneIphoneIphoneIphoneIphoneIphone",
+      "price": "100.00",
+      "archived": false,
+      "delivery": "f",
+      "discount": 0,
+      "quantity": 10,
+      "created": "2023-03-07T05:11:43.975Z",
+      "category": 1,
+      "tag": [
+        1
+      ]
+    }
+  },
+  {
+    "model": "app_product.product",
+    "pk": 5,
+    "fields": {
+      "title": "Iphone",
+      "description": "IphoneIphoneIphoneIphoneIphoneIphoneIphoneIphoneIphoneIphoneIphone",
+      "price": "100.00",
+      "archived": false,
+      "delivery": "f",
+      "discount": 0,
+      "quantity": 10,
+      "created": "2023-03-07T05:11:43.975Z",
+      "category": 1,
+      "tag": [
+        1
+      ]
+    }
+  }
+]
